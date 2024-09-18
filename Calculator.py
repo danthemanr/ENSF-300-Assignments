@@ -7,13 +7,13 @@ operators = ['+', '-', '*', '/'] #I might want to add some more
 
 def mathfunct(n1, n2, op):
     #print("mathfunct: ", n1, op, n2)
-    if op == 0:
+    if op == '+':
         return n1 + n2
-    if op == 1:
+    if op == '-':
         return n1 - n2
-    if op == 2:
+    if op == '*':
         return n1 * n2
-    if op == 3:
+    if op == '/':
         return n1 // n2
 
 def readnum(string):
@@ -79,7 +79,7 @@ def readop(string):
             if x == '-' and not y: #If the dash is not imediately after an integer
                 continue #then it can't be an operator
             else:
-                op_list[current] = operators.index(x)
+                op_list[current] = x
                 #print(op_list[current])
                 current += 1
                 y = False
@@ -92,6 +92,20 @@ def readop(string):
         print(f'invalid format detected at character \'{er_char}\' in position {er_pos}. Try again.')
         op_list = [-1, -1, -1]
     return op_list
+
+def evaluate(num_list, op_list):
+    if (op_list[1] == '*' or op_list[1] == '/') and (op_list[0] == '+' or op_list[0] == '-'):
+        #complex function
+        temp = mathfunct(num_list[1], num_list[2], op_list[1])
+        answer = mathfunct(num_list[0], temp, op_list[0])
+    else:
+        #simple function
+        temp = mathfunct(num_list[0], num_list[1], op_list[0])
+        answer = mathfunct(temp, num_list[2], op_list[1])
+    return answer
+
+def display(num_list, op_list, answer):
+    print(num_list[0], op_list[0], num_list[1], op_list[1], num_list[2], "=", answer)
 
 def main():
     usr_str = input(prompt)#formatting needed?
@@ -106,72 +120,10 @@ def main():
             usr_str = input(prompt)
             continue
         
-        if False:
-            numstr_list = ["", "", ""]
-            op_list = [-1, -1, -1] #may need to be longer for brackets
-            current = 0
-            er_char = '' #for error message
-            er_pos = 0
-            #the loop that interprets most of the input
-            for x in usr_str:
-                #print(x)
-                if x == ' ':
-                    continue
-                elif '0' <= x and x <= '9':
-                    numstr_list[current] += x
-                    #print("a number in string format: ", numstr_list[current])
-                elif x in operators:
-                    if x == '-' and (numstr_list[current] == "" or numstr_list[current][-1] == '-'): #If a number is negative
-                        numstr_list[current] += x
-                        #print("should be a dash: ", numstr_list[current])
-                    elif numstr_list[current] == "": #if the first charcter is an operator
-                        usr_str = "e"
-                        er_char = x
-                        break
-                    else:
-                        op_list[current] = operators.index(x)
-                        #print(op_list[current])
-                        current += 1
-                elif op_list[2] != -1: #if there are too many operators
-                    usr_str = "e"
-                    er_char = x
-                    break
-                else:
-                    usr_str = "e"
-                    er_char = x
-                    break
-                er_pos += 1
-            if usr_str == "e":
-                print(f'invalid format detected at character \'{er_char}\' in position {er_pos}. Try again.')
-                break
-        
-            num_list = [0, 0, 0]
-            count = 0
-            #the loop that make the integers into integers
-            for s in numstr_list:
-                #print("findnum: ", s)
-                dec = 1
-                for i in range(len(s)): #I could have used the int function
-                    if s[-1-i] == '-':
-                        num_list[count] *= -1
-                    else:
-                        num_list[count] += int(s[-1-i]) * dec
-                        dec *= 10
-                #print("a number from num_list: ", num_list[count])
-                count += 1
-        
-        #the part that calculates the expression
-        if (op_list[1] == '*' or op_list[1] == '/') and (op_list[0] == '+' or op_list[0] == '-'):
-            #complex function
-            temp = mathfunct(num_list[1], num_list[2], op_list[1])
-            answer = mathfunct(num_list[0], temp, op_list[0])
-        else:
-            #simple function
-            temp = mathfunct(num_list[0], num_list[1], op_list[0])
-            answer = mathfunct(temp, num_list[2], op_list[1])
-        #print("first operation =", temp)
+        answer = evaluate(num_list, op_list)
 
-        print(usr_str, '=', answer)
+        display(num_list, op_list, answer)
+
         usr_str = input(prompt)
     return 0
 
