@@ -2,7 +2,7 @@
 #Daniel Rey, ENSF 300, F24
 #A simple calculator program
 
-prompt = "Enter a mathematical expression with three integers and two operators. Brackets are not allowed. Type q to quit.\n"
+prompt = "Enter a mathematical expression with three integers and two operators. Brackets are not allowed. Available operators are +, -, *, and / Type q to quit.\n"
 operators = ['+', '-', '*', '/'] #I might want to add some more
 
 def myAdd(x,y):
@@ -142,7 +142,9 @@ def evaluate(num_list, op_list):
     return answer
 
 def display(num_list, op_list, answer):
-    print(num_list[0], op_list[0], num_list[1], op_list[1], num_list[2], "=", answer)
+    #print(num_list[0],op_list[0],num_list[1],op_list[1],num_list[2],"=",answer) is not the right format
+    print("Entered expression:", num_list[0], op_list[0], num_list[1], op_list[1], num_list[2])
+    print("Your final answer =", answer)
 
 def main():
     usr_str = input(prompt)
