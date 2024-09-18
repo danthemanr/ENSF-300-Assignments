@@ -3,7 +3,7 @@
 #A simple calculator program
 
 prompt = "Enter a mathematical expression with three integers and two operators. Brackets are not allowed. Available operators are +, -, *, and / Type q to quit.\n"
-operators = ['+', '-', '*', '/'] #I might want to add some more
+operators = ['+', '-', '*', '/']
 
 def myAdd(x,y):
     return x+y
@@ -20,16 +20,13 @@ def readnum(string):
     er_char = '' #for error message
     er_pos = 0
     for x in string:
-        #print(x)
         if x == ' ':
             continue
         elif '0' <= x and x <= '9':
             numstr_list[current] += x
-            #print("a number in string format: ", numstr_list[current])
         elif x in operators:
             if x == '-' and (numstr_list[current] == "" or numstr_list[current][-1] == '-'): #If a number is negative
                 numstr_list[current] += x
-                #print("should be a dash: ", numstr_list[current])
             elif numstr_list[current] == "": #if the first charcter is an operator or the previos character was one
                 string = "e"
                 er_char = x
@@ -43,14 +40,13 @@ def readnum(string):
         er_pos += 1
 
     num_list = [0, 0, 0, 0]
-    if string == "e": #will this properly send an error message?
+    if string == "e":
         print(f'invalid format detected at character \'{er_char}\' in position {er_pos}. Try again.')
         num_list = [0, 0, 0, 1]
     
     count = 0
     #the loop that make the integers into integers
     for s in numstr_list:
-        #print("findnum: ", s)
         dec = 1
         length = 0
         for ch in s:
@@ -61,7 +57,6 @@ def readnum(string):
             else:
                 num_list[count] += int(s[-1-i]) * dec
                 dec *= 10
-        #print("a number from num_list: ", num_list[count])
         count += 1
     return num_list
 
@@ -72,16 +67,14 @@ def readop(string):
     er_pos = 0
     y = False
     for x in string:
-        #print(x)
         if x == ' ' or '0' <= x and x <= '9':
-            y = True #this was part of an integer
+            y = True #that x was part of an integer
             continue
         elif x in operators:
             if x == '-' and not y: #If the dash is not imediately after an integer
                 continue #then it can't be an operator
             else:
                 op_list[current] = x
-                #print(op_list[current])
                 current += 1
                 y = False
         elif op_list[2] != -1: #if there are too many operators
@@ -142,7 +135,6 @@ def evaluate(num_list, op_list):
     return answer
 
 def display(num_list, op_list, answer):
-    #print(num_list[0],op_list[0],num_list[1],op_list[1],num_list[2],"=",answer) is not the right format
     print("Entered expression:", num_list[0], op_list[0], num_list[1], op_list[1], num_list[2])
     print("Your final answer =", answer)
 
