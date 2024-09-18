@@ -5,6 +5,15 @@
 prompt = "Enter a mathematical expression with three integers and two operators. Brackets are not allowed. Type q to quit.\n"
 operators = ['+', '-', '*', '/'] #I might want to add some more
 
+def myAdd(x,y):
+    return x+y
+def mySub(x,y):
+    return x-y
+def myMul(x,y):
+    return x*y
+def myDiv(x,y):
+    return x//y
+
 def mathfunct(n1, n2, op):
     #print("mathfunct: ", n1, op, n2)
     if op == '+':
@@ -54,7 +63,7 @@ def readnum(string):
     for s in numstr_list:
         #print("findnum: ", s)
         dec = 1
-        for i in range(len(s)):
+        for i in range(len(s)): #FIXME am I allowed to use len or range or int?
             if s[-1-i] == '-':
                 num_list[count] *= -1
             else:
@@ -95,20 +104,57 @@ def readop(string):
 
 def evaluate(num_list, op_list):
     if (op_list[1] == '*' or op_list[1] == '/') and (op_list[0] == '+' or op_list[0] == '-'):
-        #complex function
-        temp = mathfunct(num_list[1], num_list[2], op_list[1])
-        answer = mathfunct(num_list[0], temp, op_list[0])
+        if op_list[1] == '*':
+            if op_list[0] == '+':
+                answer = myAdd(num_list[0], myMul(num_list[1], num_list[2]))
+            else:
+                answer = mySub(num_list[0], myMul(num_list[1], num_list[2]))
+        else:
+            if op_list[0] == '+':
+                answer = myAdd(num_list[0], myDiv(num_list[1], num_list[2]))
+            else:
+                answer = mySub(num_list[0], myDiv(num_list[1], num_list[2]))
     else:
-        #simple function
-        temp = mathfunct(num_list[0], num_list[1], op_list[0])
-        answer = mathfunct(temp, num_list[2], op_list[1])
+        if op_list[0] == '+':
+            if op_list[1] == '+':
+                answer = myAdd(myAdd(num_list[0], num_list[1]), num_list[2])
+            else:
+                answer = mySub(myAdd(num_list[0], num_list[1]), num_list[2])
+        elif op_list[0] == '-':
+            if op_list[1] == '+':
+                answer = myAdd(mySub(num_list[0], num_list[1]), num_list[2])
+            else:
+                answer = mySub(mySub(num_list[0], num_list[1]), num_list[2])
+        elif (op_list[0] == '*' or op_list[0] == '/') and (op_list[1] == '+' or op_list[1] == '-'):
+            if op_list[0] == '*':
+                if op_list[1] == '+':
+                    answer = myAdd(myMul(num_list[0], num_list[1]), num_list[2])
+                else:
+                    answer = mySub(myMul(num_list[0], num_list[1]), num_list[2])
+            else:
+                if op_list[1] == '+':
+                    answer = myAdd(myDiv(num_list[0], num_list[1]), num_list[2])
+                else:
+                    answer = mySub(myDiv(num_list[0], num_list[1]), num_list[2])
+        else:
+            if op_list[0] == '*':
+                if op_list[1] == '*':
+                    answer = myMul(myMul(num_list[0], num_list[1]), num_list[2])
+                else:
+                    answer = myDiv(myMul(num_list[0], num_list[1]), num_list[2])
+            elif op_list[0] == '/':
+                if op_list[1] == '*':
+                    answer = myMul(myDiv(num_list[0], num_list[1]), num_list[2])
+                else:
+                    answer = myDiv(myDiv(num_list[0], num_list[1]), num_list[2])
+
     return answer
 
 def display(num_list, op_list, answer):
     print(num_list[0], op_list[0], num_list[1], op_list[1], num_list[2], "=", answer)
 
 def main():
-    usr_str = input(prompt)#formatting needed?
+    usr_str = input(prompt)
     while usr_str != "q":
         num_list = readnum(usr_str)
         if num_list[-1] != 0:
