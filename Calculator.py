@@ -14,17 +14,6 @@ def myMul(x,y):
 def myDiv(x,y):
     return x//y
 
-def mathfunct(n1, n2, op):
-    #print("mathfunct: ", n1, op, n2)
-    if op == '+':
-        return n1 + n2
-    if op == '-':
-        return n1 - n2
-    if op == '*':
-        return n1 * n2
-    if op == '/':
-        return n1 // n2
-
 def readnum(string):
     numstr_list = ["", "", ""]
     current = 0
@@ -63,7 +52,10 @@ def readnum(string):
     for s in numstr_list:
         #print("findnum: ", s)
         dec = 1
-        for i in range(len(s)): #FIXME am I allowed to use len or range or int?
+        length = 0
+        for ch in s:
+            length += 1
+        for i in range(length): #FIXME am I allowed to use len or range or int? The TAs say I am... probably not allowed to use len
             if s[-1-i] == '-':
                 num_list[count] *= -1
             else:
@@ -147,7 +139,6 @@ def evaluate(num_list, op_list):
                     answer = myMul(myDiv(num_list[0], num_list[1]), num_list[2])
                 else:
                     answer = myDiv(myDiv(num_list[0], num_list[1]), num_list[2])
-
     return answer
 
 def display(num_list, op_list, answer):
