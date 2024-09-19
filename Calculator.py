@@ -43,6 +43,9 @@ def readnum(string):
         er_pos += 1
 
     num_list = [0, 0, 0, 0]
+    if numstr_list[-1] == "":
+        print(f'invalid format detected: not enough integers or operators. Try again.')
+        num_list = [0, 0, 0, 1]
     if string == "e": #will this properly send an error message?
         print(f'invalid format detected at character \'{er_char}\' in position {er_pos}. Try again.')
         num_list = [0, 0, 0, 1]
@@ -66,7 +69,7 @@ def readnum(string):
     return num_list
 
 def readop(string):
-    op_list = [-1, -1, -1]
+    op_list = ['0', '0', '0']
     current = 0
     er_char = '' #for error message
     er_pos = 0
@@ -84,14 +87,14 @@ def readop(string):
                 #print(op_list[current])
                 current += 1
                 y = False
-        elif op_list[2] != -1: #if there are too many operators
+        elif op_list[2] != '0': #if there are too many operators
             string = "e"
             er_char = x
             break
         er_pos += 1
     if string == "e":
         print(f'invalid format detected at character \'{er_char}\' in position {er_pos}. Try again.')
-        op_list = [-1, -1, -1]
+        op_list = ['1', '1', '1']
     return op_list
 
 def evaluate(num_list, op_list):
@@ -153,9 +156,11 @@ def main():
             continue
 
         op_list = readop(usr_str)
-        if op_list[0] == -1:
+        if op_list[1] == '1':
             usr_str = input(prompt)
             continue
+        elif op_list[1] == '0':
+            print(f'invalid format detected: not enough integers or operators. Try again.')
         
         answer = evaluate(num_list, op_list)
 
