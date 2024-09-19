@@ -2,7 +2,7 @@
 #Daniel Rey, ENSF 300, F24
 #A simple calculator program
 
-prompt = "Enter a mathematical expression with three integers and two operators. Brackets are not allowed. Type q to quit.\n"
+prompt = "Enter a mathematical expression with three integers and two operators. Available operators are +, -, *, and /. Brackets are not allowed. Type q to quit.\n"
 operators = ['+', '-', '*', '/'] #I might want to add some more
 
 def myAdd(x,y):
@@ -24,13 +24,16 @@ def readnum(string):
         if x == ' ':
             continue
         elif '0' <= x and x <= '9':
+            if numstr_list[-1] == numstr_list[current-1]:
+                numstr_list[-1] = ""
+                break
             numstr_list[current] += x
             #print("a number in string format: ", numstr_list[current])
         elif x in operators:
             if x == '-' and (numstr_list[current] == "" or numstr_list[current][-1] == '-'): #If a number is negative
                 numstr_list[current] += x
                 #print("should be a dash: ", numstr_list[current])
-            elif numstr_list[current] == "": #if the first charcter is an operator or the previos character was one
+            elif numstr_list[current] == "": #if the first charcter is an operator or the previous character was one
                 string = "e"
                 er_char = x
                 break
@@ -44,7 +47,7 @@ def readnum(string):
 
     num_list = [0, 0, 0, 0]
     if numstr_list[-1] == "":
-        print(f'invalid format detected: not enough integers or operators. Try again.')
+        print(f'invalid format detected: wrong number of integers or operators. Try again.')
         num_list = [0, 0, 0, 1]
     if string == "e": #will this properly send an error message?
         print(f'invalid format detected at character \'{er_char}\' in position {er_pos}. Try again.')
@@ -159,8 +162,8 @@ def main():
         if op_list[1] == '1':
             usr_str = input(prompt)
             continue
-        elif op_list[1] == '0':
-            print(f'invalid format detected: not enough integers or operators. Try again.')
+        if op_list[1] == '0':
+            print(f'invalid format detected: wrong number of integers or operators. Try again.')
         
         answer = evaluate(num_list, op_list)
 
